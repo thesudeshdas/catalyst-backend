@@ -3,6 +3,10 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+// mongoose conection
+const { mongooseConnection } = require('./connection/mongoose.connection');
+mongooseConnection();
+
 const app: Express = express();
 const port = process.env.PORT;
 
