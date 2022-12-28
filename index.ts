@@ -1,6 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 
+const cors = require('cors');
+
 dotenv.config();
 
 const indexRouter = require('./routes/index.route');
@@ -12,6 +14,8 @@ mongooseConnection();
 
 const app: Express = express();
 const port = process.env.PORT;
+
+app.use(cors());
 
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
