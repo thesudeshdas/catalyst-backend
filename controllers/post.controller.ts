@@ -1,9 +1,11 @@
+import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+import { IPost } from '../types/post.type';
 
 const Post = require('../models/post.model');
 const User = require('../models/user.model');
 
-exports.post_list_get = async (req: any, res: any) => {
+exports.post_list_get = async (req: Request, res: Response) => {
   try {
     const posts = await Post.find();
 
@@ -28,7 +30,12 @@ exports.post_list_get = async (req: any, res: any) => {
   }
 };
 
-exports.post_find_param = async (req: any, res: any, next: any, id: any) => {
+exports.post_find_param = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  id: string
+) => {
   try {
     if (mongoose.Types.ObjectId.isValid(id)) {
       const post = await Post.findById(id);
@@ -58,7 +65,7 @@ exports.post_find_param = async (req: any, res: any, next: any, id: any) => {
   }
 };
 
-exports.post_details_get = async (req: any, res: any) => {
+exports.post_details_get = async (req: Request, res: Response) => {
   const { post } = req;
 
   return res.status(200).json({

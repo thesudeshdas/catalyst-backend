@@ -27,7 +27,7 @@ export type IUser = {
   stack: IStack[];
   social: ISocial[];
   status: string;
-  followers: string[];
-  following: string[];
-  starredPost: string[];
+  followers: Types.ObjectId[];
+  following: Types.ObjectId[];
+  starredPost: Types.ObjectId[];
 };
