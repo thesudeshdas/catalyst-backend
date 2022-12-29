@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 import { Schema, model, Types, Model } from 'mongoose';
-import { IPost } from '../types/user.type';
+import { IPost } from '../types/post.type';
 
 const PostSchema: Schema = new Schema({
   user: {
