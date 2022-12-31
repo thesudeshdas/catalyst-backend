@@ -55,7 +55,7 @@ app.use(
   cors({
     origin: CLIENT_ORIGIN_URL,
     methods: ['GET'],
-    allowedHeaders: ['Authorization', 'Content-Type'],
+    allowedHeaders: ['*'],
     maxAge: 86400,
   })
 );
