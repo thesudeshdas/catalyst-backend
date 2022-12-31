@@ -38,7 +38,15 @@ exports.post_find_param = async (
 ) => {
   try {
     if (mongoose.Types.ObjectId.isValid(id)) {
-      const post = await Post.findById(id);
+      const post = await Post.findById(id)
+        .populate({
+          path: 'user',
+          model: User,
+        })
+        .populate({
+          path: 'comments',
+          populate: { path: 'user', model: User },
+        });
 
       if (!post) {
         return res.status(404).json({
