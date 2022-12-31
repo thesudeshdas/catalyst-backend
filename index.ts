@@ -51,7 +51,13 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: '*',
+    methods: ['GET'],
+    maxAge: 86400,
+  })
+);
 
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
