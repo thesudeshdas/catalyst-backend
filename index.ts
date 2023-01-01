@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import dotenv from 'dotenv';
 const indexRouter = require('./routes/index.route');
 const postsRouter = require('./routes/posts.route');
+const usersRouter = require('./routes/users.route');
 const { errorHandler } = require('./middleware/error.middleware');
 const { notFoundHandler } = require('./middleware/not-found.middleware');
 const helmet = require('helmet');
@@ -61,6 +62,7 @@ app.use(
 
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
+app.use('/users', usersRouter);
 
 app.use(errorHandler);
 app.use(notFoundHandler);
