@@ -82,7 +82,7 @@ router.get(
 router.get(
   '/google/redirect',
   passport.authenticate('google', {
-    successRedirect: process.env.CLIENT_APP_URL,
+    successRedirect: 'https://catalyst-react.netlify.app/',
     failureRedirect: '/login/failed',
   })
 );
