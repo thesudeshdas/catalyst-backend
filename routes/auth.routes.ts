@@ -76,24 +76,6 @@ router.get(
 );
 
 // redirect callback
-// router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
-//   // return res.status(200).json({
-//   //   success: true,
-//   //   message: 'User has been created or already exists',
-//   //   user: req.user,
-//   // });
-
-//   var responseHTML =
-//     '<html><head><title>Main</title></head><body></body><script>res = %value%; window.opener.postMessage(res, "*");window.close();</script></html>';
-//   responseHTML = responseHTML.replace(
-//     '%value%',
-//     JSON.stringify({
-//       user: req.user,
-//     })
-//   );
-//   res.status(200).send(responseHTML);
-// });
-
 router.get(
   '/google/redirect',
   passport.authenticate('google', {

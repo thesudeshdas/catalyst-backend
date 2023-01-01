@@ -2,15 +2,15 @@ import passport from 'passport';
 import GoogleStrategy from 'passport-google-oauth20';
 const User = require('../models/user.model');
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
+// passport.serializeUser((user, done) => {
+//   done(null, user.id);
+// });
 
-passport.deserializeUser((id, done) => {
-  User.findById(id).then((user) => {
-    done(null, user);
-  });
-});
+// passport.deserializeUser((id, done) => {
+//   User.findById(id).then((user) => {
+//     done(null, user);
+//   });
+// });
 
 passport.use(
   new GoogleStrategy(
@@ -51,3 +51,15 @@ passport.use(
     }
   )
 );
+
+passport.serializeUser(function (user, cb) {
+  process.nextTick(function () {
+    cb(null, { id: user.id, name: user.name });
+  });
+});
+
+passport.deserializeUser(function (user, cb) {
+  process.nextTick(function () {
+    return cb(null, user);
+  });
+});
