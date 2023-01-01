@@ -24,7 +24,7 @@ const passport = require('passport');
 // });
 
 router.get('/login/success', (req, res) => {
-  console.log(req, res);
+  // console.log(req, res);
 
   console.log('before if-else');
 
