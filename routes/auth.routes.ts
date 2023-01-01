@@ -24,20 +24,29 @@ const passport = require('passport');
 // });
 
 router.get('/login/success', (req, res) => {
+  console.log(req, res);
+
+  console.log('before if-else');
+
   if (req.user) {
+    console.log('inside if');
+
     res.status(200).json({
       success: true,
       message: 'successfull',
       user: req.user,
       //   cookies: req.cookies
     });
+  } else {
+    console.log('outside if');
+
+    res.status(401).json({
+      success: false,
+      message: 'unsuccessfull',
+      // user: req.user,
+      //   cookies: req.cookies
+    });
   }
-  res.status(401).json({
-    success: false,
-    message: 'unsuccessfull',
-    // user: req.user,
-    //   cookies: req.cookies
-  });
 });
 
 router.get('/login/failed', (req, res) => {
