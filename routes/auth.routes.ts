@@ -82,7 +82,7 @@ router.get(
 router.get(
   '/google/redirect',
   passport.authenticate('google', {
-    successRedirect: 'http://localhost:3000',
+    successRedirect: process.env.CLIENT_APP_URL,
     failureRedirect: '/login/failed',
   })
 );
