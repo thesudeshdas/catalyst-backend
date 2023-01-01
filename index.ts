@@ -26,7 +26,7 @@ const corsOptions = {
 
 app.use(
   cors({
-    origin: `https://catalyst-react.netlify.app`,
+    origin: ['https://catalyst-react.netlify.app', 'http://localhost:3000'],
     methods: 'GET,POST,PUT,DELETE',
     credentials: true,
   })
