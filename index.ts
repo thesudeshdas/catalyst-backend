@@ -19,12 +19,20 @@ const app: Express = express();
 
 // cors policy
 const corsOptions = {
-  origin: ['*'],
+  origin: [process.env.CLIENT_APP_URL],
   //update: or "origin: true," if you don't wanna add a specific one
   credentials: true,
 };
 
-app.use(cors(corsOptions));
+app.use(
+  cors({
+    origin: `${process.env.CLIENT_APP_URL}`,
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  })
+);
+
+// app.use(cors(corsOptions));
 // app.use(
 //   cors({
 //     origin: '*',
@@ -72,15 +80,6 @@ app.use(
 
 app.use((req, res, next) => {
   res.contentType('application/json; charset=utf-8');
-  next();
-});
-
-app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', process.env.CLIENT_APP_URL); // update to match the domain you will make the request from
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept'
-  );
   next();
 });
 
