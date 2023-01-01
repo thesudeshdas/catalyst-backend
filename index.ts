@@ -9,12 +9,6 @@ const usersRouter = require('./routes/users.route');
 
 dotenv.config();
 
-// if (!(process.env.PORT && process.env.CLIENT_ORIGIN_URL)) {
-//   throw new Error(
-//     'Missing required environment variables. Check docs for more info.'
-//   );
-// }
-
 // mongoose conection
 const { mongooseConnection } = require('./connection/mongoose.connection');
 mongooseConnection();
