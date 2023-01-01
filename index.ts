@@ -1,28 +1,25 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
+const helmet = require('helmet');
+const cors = require('cors');
+
 const indexRouter = require('./routes/index.route');
 const postsRouter = require('./routes/posts.route');
 const usersRouter = require('./routes/users.route');
-const { errorHandler } = require('./middleware/error.middleware');
-const { notFoundHandler } = require('./middleware/not-found.middleware');
-const helmet = require('helmet');
-
-const cors = require('cors');
 
 dotenv.config();
 
-if (!(process.env.PORT && process.env.CLIENT_ORIGIN_URL)) {
-  throw new Error(
-    'Missing required environment variables. Check docs for more info.'
-  );
-}
+// if (!(process.env.PORT && process.env.CLIENT_ORIGIN_URL)) {
+//   throw new Error(
+//     'Missing required environment variables. Check docs for more info.'
+//   );
+// }
 
 // mongoose conection
 const { mongooseConnection } = require('./connection/mongoose.connection');
 mongooseConnection();
 
-const PORT = parseInt(process.env.PORT, 10);
-const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
+const PORT = process.env.PORT;
 
 const app: Express = express();
 
@@ -63,9 +60,6 @@ app.use(
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
 app.use('/users', usersRouter);
-
-app.use(errorHandler);
-app.use(notFoundHandler);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
