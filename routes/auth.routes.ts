@@ -43,7 +43,7 @@ router.get('/login/failed', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect(process.env.CLIENT_APP_URL);
+  res.redirect('https://catalyst-react.netlify.app/');
 });
 
 // log out
@@ -82,7 +82,7 @@ router.get(
 router.get(
   '/google/redirect',
   passport.authenticate('google', {
-    successRedirect: 'https://catalyst-react.netlify.app/',
+    successRedirect: 'https://catalyst-react.netlify.app',
     failureRedirect: '/login/failed',
   })
 );
