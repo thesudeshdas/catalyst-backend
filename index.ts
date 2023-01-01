@@ -51,9 +51,9 @@ app.use(
 );
 
 // initialize passport
-app.use(passport.initialize());
+// app.use(passport.initialize());
 app.use(passport.authenticate('session'));
-app.use(passport.session());
+// app.use(passport.session());
 
 // json
 app.use(express.json());
