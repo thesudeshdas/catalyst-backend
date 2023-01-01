@@ -43,7 +43,7 @@ router.get('/login/failed', (req, res) => {
 
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('http://localhost:3000');
+  res.redirect(process.env.CLIENT_APP_URL);
 });
 
 // log out

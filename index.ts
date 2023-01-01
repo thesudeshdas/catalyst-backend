@@ -19,7 +19,7 @@ const app: Express = express();
 
 // cors policy
 const corsOptions = {
-  origin: ['http://localhost:3000'],
+  origin: [process.env.CLIENT_APP_URL],
   //update: or "origin: true," if you don't wanna add a specific one
   credentials: true,
 };
@@ -76,7 +76,7 @@ app.use((req, res, next) => {
 });
 
 app.use(function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000'); // update to match the domain you will make the request from
+  res.header('Access-Control-Allow-Origin', process.env.CLIENT_APP_URL); // update to match the domain you will make the request from
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
