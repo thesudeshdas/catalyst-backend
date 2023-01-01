@@ -19,7 +19,7 @@ const app: Express = express();
 
 // cors policy
 const corsOptions = {
-  origin: [process.env.CLIENT_APP_URL],
+  origin: ['*'],
   //update: or "origin: true," if you don't wanna add a specific one
   credentials: true,
 };
