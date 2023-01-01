@@ -32,6 +32,12 @@ router.get('/login/success', (req, res) => {
       //   cookies: req.cookies
     });
   }
+  res.status(401).json({
+    success: false,
+    message: 'unsuccessfull',
+    // user: req.user,
+    //   cookies: req.cookies
+  });
 });
 
 router.get('/login/failed', (req, res) => {
