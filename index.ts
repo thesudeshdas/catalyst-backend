@@ -1,29 +1,53 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
+const cookieSession = require('cookie-session');
+const helmet = require('helmet');
+const cors = require('cors');
+const passport = require('passport');
+
 const indexRouter = require('./routes/index.route');
 const postsRouter = require('./routes/posts.route');
-const { errorHandler } = require('./middleware/error.middleware');
-const { notFoundHandler } = require('./middleware/not-found.middleware');
-const helmet = require('helmet');
-
-const cors = require('cors');
+const usersRouter = require('./routes/users.route');
+const authRouter = require('./routes/auth.routes');
 
 dotenv.config();
+const passportSetup = require('./config/passport-setup');
 
-if (!(process.env.PORT && process.env.CLIENT_ORIGIN_URL)) {
-  throw new Error(
-    'Missing required environment variables. Check docs for more info.'
-  );
-}
+const PORT = process.env.PORT;
+
+const app: Express = express();
+
+// cors policy
+const corsOptions = {
+  origin: [process.env.CLIENT_APP_URL],
+  //update: or "origin: true," if you don't wanna add a specific one
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
+// app.use(
+//   cors({
+//     origin: '*',
+//     methods: ['GET'],
+//     maxAge: 86400,
+//   })
+// );
+
+// set up session cookies
+app.use(
+  cookieSession({
+    maxAge: 24 * 60 * 60 * 1000,
+    keys: ['sudeshsessionkey'],
+  })
+);
 
 // mongoose conection
 const { mongooseConnection } = require('./connection/mongoose.connection');
 mongooseConnection();
 
-const PORT = parseInt(process.env.PORT, 10);
-const CLIENT_ORIGIN_URL = process.env.CLIENT_ORIGIN_URL;
-
-const app: Express = express();
+// initialize passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json());
 app.set('json spaces', 2);
@@ -51,19 +75,30 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(
-  cors({
-    origin: '*',
-    methods: ['GET'],
-    maxAge: 86400,
-  })
-);
+app.use(function (req, res, next) {
+  res.header('Access-Control-Allow-Origin', process.env.CLIENT_APP_URL); // update to match the domain you will make the request from
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  next();
+});
+
+// const authCheck = (req, res, next) => {
+//   if (!req.user) {
+//     res.status(401).json({
+//       authenticated: false,
+//       message: 'user has not been authenticated',
+//     });
+//   } else {
+//     next();
+//   }
+// };
 
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
-
-app.use(errorHandler);
-app.use(notFoundHandler);
+app.use('/users', usersRouter);
+app.use('/auth', authRouter);
 
 app.listen(PORT, () => {
   console.log(`⚡️[server]: Server is running at http://localhost:${PORT}`);
