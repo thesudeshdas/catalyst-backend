@@ -20,7 +20,7 @@ passport.use(
       callbackURL: '/auth/google/redirect',
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log({ profile });
+      // console.log({ profile });
 
       User.findOne({ googleId: profile.id }).then((currentUser) => {
         if (currentUser) {
@@ -53,12 +53,16 @@ passport.use(
 );
 
 passport.serializeUser(function (user, cb) {
+  console.log('serialise user', user);
+
   process.nextTick(function () {
-    cb(null, { id: user.id, name: user.name });
+    cb(null, user);
   });
 });
 
 passport.deserializeUser(function (user, cb) {
+  console.log('deserialise user', user);
+
   process.nextTick(function () {
     return cb(null, user);
   });

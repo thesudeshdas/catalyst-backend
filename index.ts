@@ -40,15 +40,25 @@ const app: Express = express();
 const { mongooseConnection } = require('./connection/mongoose.connection');
 mongooseConnection();
 
-// express session
+// cookie session
 app.use(
-  session({
-    secret: 'keyboard cat',
-    resave: false, // don't save session if unmodified
-    saveUninitialized: false, // don't create session until something stored
-    store: store,
-  })
+  cookieSession({ name: 'session', keys: ['lama'], maxAge: 24 * 60 * 60 * 100 })
 );
+
+// express session
+// app.use(
+//   session({
+//     secret: 'keyboard cat',
+//     resave: false, // don't save session if unmodified
+//     saveUninitialized: false, // don't create session until something stored
+//     store: store,
+//     cookie: {
+//       sameSite: 'none',
+//       secure: false,
+//       maxAge: 1000 * 60 * 60 * 24 * 7, // One Week
+//     },
+//   })
+// );
 
 // initialize passport
 // app.use(passport.initialize());

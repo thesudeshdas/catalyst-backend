@@ -26,7 +26,7 @@ const passport = require('passport');
 router.get('/login/success', (req, res) => {
   // console.log(req, res);
 
-  console.log('before if-else');
+  console.log('before if-else', req.session);
 
   if (req.user) {
     console.log('inside if');
@@ -57,6 +57,15 @@ router.get('/login/failed', (req, res) => {
 });
 
 router.get('/logout', (req, res) => {
+  // if (req.user) {
+  //   console.log('logout when user');
+
+  //   req.logout();
+  //   res.redirect('http://localhost:3000');
+  // }
+
+  console.log('logout when NO user');
+
   req.logout();
   res.redirect('http://localhost:3000');
 });
