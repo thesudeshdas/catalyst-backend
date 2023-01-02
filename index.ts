@@ -21,6 +21,15 @@ const passportSetup = require('./config/passport-setup');
 const PORT = process.env.PORT;
 const app: Express = express();
 
+// cors policy
+app.use(
+  cors({
+    origin: ['https://catalyst-react.netlify.app', 'http://localhost:3000'],
+    methods: 'GET,POST,PUT,DELETE',
+    credentials: true,
+  })
+);
+
 // set up session cookies
 // app.use(
 //   cookieSession({
@@ -53,7 +62,7 @@ app.use(
     // saveUninitialized: false, // don't create session until something stored
     store: MongoStore.create({ mongoUrl: process.env.DB_URL }),
     cookie: {
-      // sameSite: 'none',
+      sameSite: 'none',
       secure: false,
       maxAge: 1000 * 60 * 60 * 24 * 7, // One Week
     },
@@ -93,15 +102,6 @@ app.use((req, res, next) => {
   res.contentType('application/json; charset=utf-8');
   next();
 });
-
-// cors policy
-app.use(
-  cors({
-    origin: ['https://catalyst-react.netlify.app', 'http://localhost:3000'],
-    methods: 'GET,POST,PUT,DELETE',
-    credentials: true,
-  })
-);
 
 app.use('/', indexRouter);
 app.use('/posts', postsRouter);
