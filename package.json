@@ -8,7 +8,6 @@
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },
   "dependencies": {
-    "connect-mongo": "^4.6.0",
     "connect-mongodb-session": "^3.1.1",
     "cookie-parser": "~1.4.4",
     "cookie-session": "^2.0.0",
