@@ -66,3 +66,38 @@ exports.user_sign_up = async (req: Request, res: Response) => {
       .json({ success: false, message: 'User could not be signed up', error });
   }
 };
+
+exports.user_sign_in = async (req: Request, res: Response) => {
+  try {
+    const attemptingUser = req.body;
+    const foundUser = await User.findOne({ email: attemptingUser.email });
+
+    if (!foundUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'No registered user with this email',
+      });
+    } else {
+      if (attemptingUser.password !== foundUser.password) {
+        return res.status(401).json({
+          success: false,
+          message: 'Password is incorrect',
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: 'Successfully signed in',
+        signedUser: {
+          ...foundUser._doc,
+          password: 'hidden password by server',
+        },
+      });
+    }
+  } catch (error) {
+    console.log('Some server error ' + error);
+    res
+      .status(500)
+      .json({ success: false, message: 'User could not be signed in', error });
+  }
+};
