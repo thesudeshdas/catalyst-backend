@@ -9,8 +9,8 @@ router.post('/sign-up', user_controller.user_sign_up);
 
 router.post('/sign-in', user_controller.user_sign_in);
 
-// router.param('postId', user_controller.post_find_param);
+router.param('userId', user_controller.user_find_param);
 
-// router.get('/:postId', user_controller.post_details_get);
+router.get('/:userId', user_controller.user_details_get);
 
 module.exports = router;

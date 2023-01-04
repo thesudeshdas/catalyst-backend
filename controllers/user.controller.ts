@@ -101,3 +101,51 @@ exports.user_sign_in = async (req: Request, res: Response) => {
       .json({ success: false, message: 'User could not be signed in', error });
   }
 };
+
+exports.user_find_param = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+  id: string
+) => {
+  try {
+    if (mongoose.Types.ObjectId.isValid(id)) {
+      const user = await User.findById(id);
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: 'user not found by this Id',
+        });
+      }
+
+      req.user = user;
+      return next();
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'Id for user is wrong',
+        wrongId: id,
+      });
+    }
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error while finding user',
+      err,
+    });
+  }
+};
+
+exports.user_details_get = async (req: Request, res: Response) => {
+  const { user } = req;
+
+  return res.status(200).json({
+    success: true,
+    message: 'User details found',
+    user: {
+      ...user?._doc,
+      password: 'hidden password by server',
+    },
+  });
+};
