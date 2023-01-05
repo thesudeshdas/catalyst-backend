@@ -13,4 +13,6 @@ router.param('userId', user_controller.user_find_param);
 
 router.get('/:userId', user_controller.user_details_get);
 
+router.post('/:userId', user_controller.user_update_details_post);
+
 module.exports = router;

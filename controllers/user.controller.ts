@@ -149,3 +149,30 @@ exports.user_details_get = async (req: Request, res: Response) => {
     },
   });
 };
+
+exports.user_update_details_post = async (req: Request, res: Response) => {
+  try {
+    const { user } = req;
+
+    const toUpdate = req.body;
+
+    await User.findByIdAndUpdate(user?._id, toUpdate, {
+      new: true,
+    }).then((updatedDoc) => {
+      if (!updatedDoc) {
+        return res.status(404).json({
+          success: false,
+          message: 'User by this id does not exist in the database.',
+        });
+      } else {
+        return res.status(200).json({ success: true, updatedUser: updatedDoc });
+      }
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error while updating user',
+      error,
+    });
+  }
+};
