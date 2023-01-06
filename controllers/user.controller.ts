@@ -227,3 +227,54 @@ exports.user_follow_post = async (req: Request, res: Response) => {
     });
   }
 };
+
+exports.user_unfollow_post = async (req: Request, res: Response) => {
+  try {
+    const { user: unfollowingUser } = req;
+    const unfollowerUserId = req.body.unfollowerUserId;
+
+    if (mongoose.Types.ObjectId.isValid(unfollowerUserId)) {
+      const updatedUnfollower = await User.findByIdAndUpdate(
+        unfollowerUserId,
+        {
+          $pull: { following: unfollowingUser?._id },
+        },
+        { new: true }
+      );
+
+      const updatedUnfollowing = await User.findByIdAndUpdate(
+        unfollowingUser?._id,
+        {
+          $pull: { followers: unfollowerUserId },
+        },
+        { new: true }
+      );
+
+      if (updatedUnfollowing && updatedUnfollower) {
+        return res.status(200).json({
+          success: true,
+          message: 'successfully added user id to followers list',
+          updatedUnfollowing,
+          updatedUnfollower,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Could not update followers',
+        });
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'The follower id is wrong',
+        unfollowerUserId,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error while following user',
+      error,
+    });
+  }
+};
