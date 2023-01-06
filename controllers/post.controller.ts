@@ -85,3 +85,87 @@ exports.post_details_get = async (req: Request, res: Response) => {
     post,
   });
 };
+
+exports.post_like_post = async (req: Request, res: Response) => {
+  try {
+    const { post } = req;
+
+    const userId = req.body.userId;
+
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      const likedPost = await Post.findByIdAndUpdate(
+        post?._id,
+        {
+          $push: { likes: userId },
+        },
+        { new: true }
+      );
+      if (!likedPost) {
+        return res.status(400).json({
+          success: false,
+          message: 'Could not like post',
+        });
+      } else {
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'successfully liked the post',
+        likedPost,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'The user id is wrong',
+        userId,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'The post could not be liked, try again.',
+      error,
+    });
+  }
+};
+
+exports.post_unlike_post = async (req: Request, res: Response) => {
+  try {
+    const { post } = req;
+
+    const userId = req.body.userId;
+
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      const unlikedPost = await Post.findByIdAndUpdate(
+        post?._id,
+        {
+          $pull: { likes: userId },
+        },
+        { new: true }
+      );
+      if (!unlikedPost) {
+        return res.status(400).json({
+          success: false,
+          message: 'Could not unlike post',
+        });
+      } else {
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'successfully unliked the post',
+        unlikedPost,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'The user id is wrong',
+        userId,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'The post could not be liked, try again.',
+      error,
+    });
+  }
+};
