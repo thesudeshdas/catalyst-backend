@@ -127,3 +127,45 @@ exports.post_like_post = async (req: Request, res: Response) => {
     });
   }
 };
+
+exports.post_unlike_post = async (req: Request, res: Response) => {
+  try {
+    const { post } = req;
+
+    const userId = req.body.userId;
+
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      const unlikedPost = await Post.findByIdAndUpdate(
+        post?._id,
+        {
+          $pull: { likes: userId },
+        },
+        { new: true }
+      );
+      if (!unlikedPost) {
+        return res.status(400).json({
+          success: false,
+          message: 'Could not unlike post',
+        });
+      } else {
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'successfully unliked the post',
+        unlikedPost,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'The user id is wrong',
+        userId,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'The post could not be liked, try again.',
+      error,
+    });
+  }
+};
