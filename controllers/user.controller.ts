@@ -176,3 +176,54 @@ exports.user_update_details_post = async (req: Request, res: Response) => {
     });
   }
 };
+
+exports.user_follow_post = async (req: Request, res: Response) => {
+  try {
+    const { user: followingUser } = req;
+    const followerUserId = req.body.followerUserId;
+
+    if (mongoose.Types.ObjectId.isValid(followerUserId)) {
+      const updatedFollower = await User.findByIdAndUpdate(
+        followerUserId,
+        {
+          $push: { following: followingUser?._id },
+        },
+        { new: true }
+      );
+
+      const updatedFollowing = await User.findByIdAndUpdate(
+        followingUser?._id,
+        {
+          $push: { followers: followerUserId },
+        },
+        { new: true }
+      );
+
+      if (updatedFollowing && updatedFollower) {
+        return res.status(200).json({
+          success: true,
+          message: 'successfully added user id to followers list',
+          updatedFollowing,
+          updatedFollower,
+        });
+      } else {
+        return res.status(400).json({
+          success: false,
+          message: 'Could not update followers',
+        });
+      }
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'The follower id is wrong',
+        followerUserId,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error while following user',
+      error,
+    });
+  }
+};

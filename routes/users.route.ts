@@ -15,4 +15,6 @@ router.get('/:userId', user_controller.user_details_get);
 
 router.post('/:userId', user_controller.user_update_details_post);
 
+router.post('/:userId/follow', user_controller.user_follow_post);
+
 module.exports = router;
