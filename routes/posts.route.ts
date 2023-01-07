@@ -13,4 +13,6 @@ router.post('/:postId/like', post_controller.post_like_post);
 
 router.post('/:postId/unlike', post_controller.post_unlike_post);
 
+router.post('/:postId/comment', post_controller.post_comment_post);
+
 module.exports = router;

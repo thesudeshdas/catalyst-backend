@@ -169,3 +169,46 @@ exports.post_unlike_post = async (req: Request, res: Response) => {
     });
   }
 };
+
+exports.post_comment_post = async (req: Request, res: Response) => {
+  try {
+    const { post } = req;
+
+    const userId = req.body.userId;
+    const commentText = req.body.commentText;
+
+    if (mongoose.Types.ObjectId.isValid(userId)) {
+      const commentPost = await Post.findByIdAndUpdate(
+        post?._id,
+        {
+          $push: { comments: { user: userId, text: commentText } },
+        },
+        { new: true }
+      );
+      if (!commentPost) {
+        return res.status(400).json({
+          success: false,
+          message: 'Could not comment on post',
+        });
+      } else {
+      }
+      return res.status(200).json({
+        success: true,
+        message: 'successfully comment on the post',
+        commentPost,
+      });
+    } else {
+      return res.status(400).json({
+        success: false,
+        message: 'The user id is wrong',
+        userId,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'The post could not be liked, try again.',
+      error,
+    });
+  }
+};
