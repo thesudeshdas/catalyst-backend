@@ -86,6 +86,45 @@ exports.post_details_get = async (req: Request, res: Response) => {
   });
 };
 
+exports.post_update_details_post = async (req: Request, res: Response) => {
+  try {
+    const { post } = req;
+
+    const toUpdate = req.body;
+
+    const updatedPost = await Post.findByIdAndUpdate(post?._id, toUpdate, {
+      new: true,
+    })
+      .populate({
+        path: 'user',
+        model: User,
+      })
+      .populate({
+        path: 'comments',
+        populate: { path: 'user', model: User },
+      });
+
+    if (!updatedPost) {
+      return res.status(400).json({
+        success: false,
+        message: 'Could not edit powst',
+      });
+    } else {
+      return res.status(200).json({
+        success: true,
+        message: 'Powst successfully edited',
+        updatedPost,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'Error while updating user',
+      error,
+    });
+  }
+};
+
 exports.post_like_post = async (req: Request, res: Response) => {
   try {
     const { post } = req;
@@ -99,7 +138,15 @@ exports.post_like_post = async (req: Request, res: Response) => {
           $push: { likes: userId },
         },
         { new: true }
-      );
+      )
+        .populate({
+          path: 'user',
+          model: User,
+        })
+        .populate({
+          path: 'comments',
+          populate: { path: 'user', model: User },
+        });
       if (!likedPost) {
         return res.status(400).json({
           success: false,
@@ -141,7 +188,15 @@ exports.post_unlike_post = async (req: Request, res: Response) => {
           $pull: { likes: userId },
         },
         { new: true }
-      );
+      )
+        .populate({
+          path: 'user',
+          model: User,
+        })
+        .populate({
+          path: 'comments',
+          populate: { path: 'user', model: User },
+        });
       if (!unlikedPost) {
         return res.status(400).json({
           success: false,
@@ -208,6 +263,37 @@ exports.post_comment_post = async (req: Request, res: Response) => {
     return res.status(500).json({
       success: false,
       message: 'The post could not be liked, try again.',
+      error,
+    });
+  }
+};
+
+exports.post_create_post = async (req: Request, res: Response) => {
+  try {
+    console.log(req.body);
+
+    const newPost = new Post(req.body);
+    const savedPost = await newPost.save();
+
+    const addedPost = await Post.findById(savedPost._id)
+      .populate({
+        path: 'user',
+        model: User,
+      })
+      .populate({
+        path: 'comments',
+        populate: { path: 'user', model: User },
+      });
+
+    return res
+      .status(200)
+      .json({ success: true, message: 'Post successfully created', addedPost });
+  } catch (error) {
+    console.log({ error });
+
+    return res.status(500).json({
+      success: false,
+      message: 'Some error while creating posts',
       error,
     });
   }
