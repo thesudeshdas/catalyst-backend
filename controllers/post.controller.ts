@@ -138,7 +138,15 @@ exports.post_like_post = async (req: Request, res: Response) => {
           $push: { likes: userId },
         },
         { new: true }
-      );
+      )
+        .populate({
+          path: 'user',
+          model: User,
+        })
+        .populate({
+          path: 'comments',
+          populate: { path: 'user', model: User },
+        });
       if (!likedPost) {
         return res.status(400).json({
           success: false,
@@ -180,7 +188,15 @@ exports.post_unlike_post = async (req: Request, res: Response) => {
           $pull: { likes: userId },
         },
         { new: true }
-      );
+      )
+        .populate({
+          path: 'user',
+          model: User,
+        })
+        .populate({
+          path: 'comments',
+          populate: { path: 'user', model: User },
+        });
       if (!unlikedPost) {
         return res.status(400).json({
           success: false,
