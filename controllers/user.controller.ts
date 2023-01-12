@@ -42,7 +42,6 @@ exports.user_sign_up = async (req: Request, res: Response) => {
       const existingUsername = await User.findOne({
         username: newUser.username,
       });
-      console.log({ existingUsername });
 
       if (existingUsername) {
         return res.status(403).json({
@@ -60,7 +59,6 @@ exports.user_sign_up = async (req: Request, res: Response) => {
       }
     }
   } catch (error) {
-    console.log('Some server error ' + error);
     res
       .status(500)
       .json({ success: false, message: 'User could not be signed up', error });
@@ -95,7 +93,6 @@ exports.user_sign_in = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    console.log('Some server error ' + error);
     res
       .status(500)
       .json({ success: false, message: 'User could not be signed in', error });
