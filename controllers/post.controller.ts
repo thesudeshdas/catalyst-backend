@@ -270,8 +270,6 @@ exports.post_comment_post = async (req: Request, res: Response) => {
 
 exports.post_create_post = async (req: Request, res: Response) => {
   try {
-    console.log(req.body);
-
     const newPost = new Post(req.body);
     const savedPost = await newPost.save();
 
@@ -289,8 +287,6 @@ exports.post_create_post = async (req: Request, res: Response) => {
       .status(200)
       .json({ success: true, message: 'Post successfully created', addedPost });
   } catch (error) {
-    console.log({ error });
-
     return res.status(500).json({
       success: false,
       message: 'Some error while creating posts',
