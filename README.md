@@ -13,7 +13,7 @@ Show the world what you've been working on.
 
 - [Live Preview](https://catalyst-react.netlify.app)
 
-- [Catalyst Frontend](https://github.com/thesudeshdas/catalyst-react)
+- [Catalyst Frontend](https://github.com/thesudeshdas/catalyst)
 
 ## Features
 
@@ -100,4 +100,4 @@ The port on which the server will run (ex - 8000)
 
 ## Feedback
 
-If you have any feedback, please reach out to me via mail [sudeshkumardas7@gmail.com](mailto:sudeshkumardas7@gmail.com)
+If you have any feedback, please reach out to me via mail [sudesh_das@outlook.com](mailto:sudesh_das@outlook.com)
