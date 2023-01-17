@@ -7,10 +7,15 @@ const User = require('../models/user.model');
 
 exports.post_list_get = async (req: Request, res: Response) => {
   try {
-    const posts = await Post.find().populate({
-      path: 'user',
-      model: User,
-    });
+    const posts = await Post.find()
+      .populate({
+        path: 'user',
+        model: User,
+      })
+      .populate({
+        path: 'comments',
+        populate: { path: 'user', model: User },
+      });
 
     if (!posts) {
       return res.status(404).json({
