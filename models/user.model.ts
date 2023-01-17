@@ -60,6 +60,7 @@ const UserSchema: Schema = new Schema({
   followers: [String],
   following: [String],
   starredPost: [String],
+  savedPost: [String],
   status: {
     type: String,
     enum: ['Active', 'Deprecated'],

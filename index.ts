@@ -1,6 +1,8 @@
 import express, { Express } from 'express';
 import dotenv from 'dotenv';
 
+dotenv.config();
+
 const cookieSession = require('cookie-session');
 const helmet = require('helmet');
 const cors = require('cors');
@@ -8,8 +10,6 @@ const cors = require('cors');
 const indexRouter = require('./routes/index.route');
 const postsRouter = require('./routes/posts.route');
 const usersRouter = require('./routes/users.route');
-
-dotenv.config();
 
 const PORT = process.env.PORT;
 

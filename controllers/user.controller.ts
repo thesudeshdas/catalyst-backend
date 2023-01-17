@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import mongoose from 'mongoose';
+const jwt = require('jsonwebtoken');
 
 const User = require('../models/user.model');
 
@@ -83,6 +84,9 @@ exports.user_sign_in = async (req: Request, res: Response) => {
         });
       }
 
+      const secret = process.env.JWT_SECRET;
+      const accessToken = jwt.sign({ userId: foundUser._id }, secret);
+
       return res.status(200).json({
         success: true,
         message: 'Successfully signed in',
@@ -90,10 +94,11 @@ exports.user_sign_in = async (req: Request, res: Response) => {
           ...foundUser._doc,
           password: 'hidden password by server',
         },
+        accessToken,
       });
     }
   } catch (error) {
-    res
+    return res
       .status(500)
       .json({ success: false, message: 'User could not be signed in', error });
   }

@@ -94,7 +94,7 @@ The port on which the server will run (ex - 8000)
 
 > 🛣️ The following are the features that I'll be working on in the future.
 
-- [ ] JWT Authentication
+- [x] JWT Authentication
 - [ ] PassportJS for OAuth 2.0
 - [ ] Blogs APIs
 
